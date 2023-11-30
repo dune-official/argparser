@@ -10,9 +10,11 @@ class Parser:
 
     def parse(self, precedence=0):
         """
-        Parses the tokens in the stream.
+        Parses the tokens in the stream recursively.
 
-        Alternatively to the type, its precedence can be used since it is unique to the token.
+        Alternatively to the token type, its precedence can be used since it is unique to the token.
+
+        Currently, the only null denoter are the argument tokens, but when that changes (it won't), a match case structure would be needed.
 
         :param precedence:
         :return:
@@ -34,6 +36,7 @@ class Parser:
 
         left = ArgNode(self.__aliases.get(current_token.tokenvalue.lower(), current_token.tokenvalue))
 
+        # crucial part to the pratt parser is the loop here
         while self.__stream.peek().precedence > precedence:
             current_token = self.__stream.next()
 
